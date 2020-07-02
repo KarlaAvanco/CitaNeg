@@ -1,0 +1,31 @@
+README
+
+
+DESCRIPTION:
+This directory contains two scripts.
+- buildingCitaNeg.py
+- buildingCitaNeg_main.py
+
+FUNCTION:
+The function of the scripts is twofold: 
+- to pre-process individual datasets to retrieve citation contexts and their respective metadata;
+- to create a new dataset combining all the individual datasets.
+
+HOW TO USE THE SCRIPTS:
+- Each dataset should be in theirs respective directory.
+- Indicate the path to each directory on the buildingCitaNeg_main.py script in the respective variable.
+- Indicate the file name/path for the output files.
+
+
+REFERENCES:
+
+Athar, Awais.(2011. Sentiment Analysis of Citations using Sentence Structure-Based Features. Proceedings of the ACL 2011 Student Session, Portland, OR, USA, 81-87.
+
+Athar, Awais.(2011). Citation Sentiment Corpus. Disponible https://cl.awaisathar.com/citation-sentiment-corpus/
+
+Dong, C., Schäfer, U. (2011). Ensemble-style Self-training on Citation Classification. Proceedings of the 5th International Joint Conference on Natural Language Processing, 623–631.
+
+Dong, C., Schäfer, U. (2011). Citation classification dataset. Disponible sur https://aclbib.opendfki.de/repos/trunk/citation_classification_dataset/
+
+Liu, Haixia. (2017).Sentiment Analysis of Citations Using Word2vec
+
