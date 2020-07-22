@@ -60,7 +60,8 @@ class XMLreader ():
         for file in file_list: 
             self.current_file_name = file
             root_node = minidom.parse(file)
-          
+            #my_text = displayNodeText(root_node)
+            #print(clean_text)
 
             # variable to store dataset source
             name_of_datasource = self.getDataSourceName ()
@@ -127,6 +128,11 @@ class XMLreader ():
                     multiple_polarities_list+=partial_list # store contexts that have multiple citations
                                                                 # and multiple polarities in a different list
                                                                   # retain the contexts as many timaes as there are different polarities
-        
+        #returned_lists = {}
+        #returned_lists['complete'] = context_list
+        #returned_lists['multiple polarities'] = multiple_polarities_list
+        #return returned_lists
         return (context_list, multiple_polarities_list)
+    
+   
             

@@ -129,7 +129,7 @@ class concitReader (XMLreader): # Class to processes the concit dataset.
     # focus on <cite id="2" function="ack" polarity="pos">Light et al. (2004)</cite>
     def getCitationTag (self):
         return 'cite'
-
+    
     def getOriginalLabelTag (self):
         return "polarity" 
 

@@ -7,6 +7,9 @@ from readerCFC import *
 from readerConcit import *
 
 import csv
+import os
+
+
 
 # Creat an instance of each object
 citanegDataset = dataset()
@@ -17,19 +20,22 @@ ims = imsReader()
 cfc = cfcReader()
 concit = concitReader()
 
+input_folder = sys.argv[1]
+output_folder = sys.argv[2]
 
-#Replace ### by file paths
-citanegDataset.append (athar.read ('/home/karla/Documentos/M2_Stage_TAL/1_buildingDataset/originalDatasets/ATHAR/*'))
-citanegDataset.append (dfki.read ('/home/karla/Documentos/M2_Stage_TAL/1_buildingDataset/originalDatasets/DFKI/*'))
-citanegDataset.append (liu.read ('/home/karla/Documentos/M2_Stage_TAL/1_buildingDataset/originalDatasets/LIU/*'))
-citanegDataset.append (cfc.read ('/home/karla/Documentos/M2_Stage_TAL/1_buildingDataset/originalDatasets/CFC/*.xml'))
-citanegDataset.append (ims.read ('/home/karla/Documentos/M2_Stage_TAL/1_buildingDataset/originalDatasets/IMS/*'))
-citanegDataset.append (concit.read ('/home/karla/Documentos/M2_Stage_TAL/1_buildingDataset/originalDatasets/Concit/'))
+citanegDataset.append (athar.read (os.path.join(input_folder,'ATHAR','*')))
+citanegDataset.append (dfki.read (os.path.join(input_folder,'DFKI','*')))
+citanegDataset.append (liu.read (os.path.join(input_folder,'LIU','*')))
+citanegDataset.append (cfc.read (os.path.join(input_folder,'CFC','*.xml')))
+citanegDataset.append (ims.read (os.path.join(input_folder,'IMS','*')))
+citanegDataset.append (concit.read (os.path.join(input_folder,'Concit')))
 
-citanegDataset.creating_context_id() 
-
-citanegDataset.exportCSV('/home/karla/Documentos/M2_Stage_TAL/1_buildingDataset/scripts/buildingCitaneg_v2_results/citaneg.csv')
-citanegDataset.exportCSVNeg('/home/karla/Documentos/M2_Stage_TAL/1_buildingDataset/scripts/buildingCitaneg_v2_results/citaneg_neg.csv')
-citanegDataset.exportMulPol('/home/karla/Documentos/M2_Stage_TAL/1_buildingDataset/scripts/buildingCitaneg_v2_results/citaneg_mul_pol.csv')
-
+citanegDataset.exportCSVwithoutDuplicates(os.path.join(output_folder,"citaneg.csv"))
+citanegDataset.exportCSVwithDuplicates(os.path.join(output_folder,"citaneg_untrimmed.csv"))
+print ('taille avec doublons : '+str(len(citanegDataset.complete_list_of_contexts)))
+print ('taille sans doublons : '+str(len(citanegDataset.trimmed_list)))
+citanegDataset.exportDuplicatesAsTxt (os.path.join(output_folder,"duplicates.txt"))
+citanegDataset.exportCSVNegWithoutDuplicates(os.path.join(output_folder,"citaneg_neg.csv"))
+citanegDataset.exportCSVNegWithDuplicates(os.path.join(output_folder,"citaneg_neg_untrimmed.csv"))
+citanegDataset.exportMulPol(os.path.join(output_folder,"citaneg_mult_pol.csv"))
 

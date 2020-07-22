@@ -28,11 +28,12 @@ class dfkiReader():
                     previousID = cite
                     dataset['citeContext'] = tokenized_line[1].strip()
                     dataset['originalLabel'] = tokenized_line[5].strip()
-                    if dataset['originalLabel'] == 'Negative':
-                        dataset['polarity'] = "1"       # Create a new label for polarity
-                    else:
-                        dataset['polarity'] = "0"
-                                
-                    context_list.append(dataset)
-
+                    if not dataset['originalLabel'] == "NULL": # exclude the contexts whose polarity is NULL
+                        if dataset['originalLabel'] == 'Negative':
+                            dataset['polarity'] = "1"       # Create a new label for polarity
+                        else:
+                            dataset['polarity'] = "0"
+                                    
+                        context_list.append(dataset)
+        
         return (context_list, [])

@@ -19,7 +19,13 @@ class atharReader ():
                         dataset['dataSource'] = 'Athar'
                         dataset['contextID'] = tokenized_line[0].strip()
                         dataset['paperID'] = tokenized_line[1].strip()
-                        dataset['citeContext'] = tokenized_line[3].strip()
+                        citeContext = tokenized_line[3].strip()
+                        match = re.search(r'^(")(.*)(")$',citeContext) # Exclude the quoatation marks before and after the text
+                        if match:
+                            context = match.group(2)
+                            dataset['citeContext'] = context
+                        else: 
+                            dataset['citeContext'] = citeContext
                         dataset['originalLabel'] = tokenized_line[2].strip()
                         if dataset['originalLabel'] == 'n':    
                             dataset['polarity'] = "1"       # Create a new label for polarity
