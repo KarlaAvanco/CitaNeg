@@ -8,6 +8,18 @@ folder = os.path.abspath(os.path.dirname(sys.argv[0]))
 
 input = open(os.path.join(folder,"input.txt"),"r",encoding="utf-8")
 output = open(os.path.join(folder,"output.txt"),"w",encoding="utf-8")
+outputHtml = open(os.path.join(folder,"output.html"),"w",encoding="utf-8")
+outputHtml.writelines("<html><head></head><body>")
+
+def repeatSearch(lineSegments, regex):
+   oldLength = -1
+   length = len(lineSegments)
+   # Look for the regular expression in all segments as long as we find occurrences:
+   while length != oldLength:
+      lineSegments = labelReference(lineSegments, regex)
+      oldLength = length
+      length = len(lineSegments)      
+   return lineSegments
 
 # For each segment in lineSegment which is not already labeled as a citation
 # check if the regex is found, in which case we have found a new citation segment
@@ -24,13 +36,9 @@ def labelReference(lineSegments, regex):
          if res:
             # A citation was found, add the segment before, the labeled citation, and the segment after, into newLineSegments
             #print("found!")
-            while res:
-               end = res.group(3)
-               newLineSegments.append(res.group(1))
-               newLineSegments.append("<cite>"+res.group(2)+"</cite>")
-               res = re.search('(.*'+regex+'.*)',end)
-               # We repeat this as long as we find other citations
-            newLineSegments.append(end)
+            newLineSegments.append(res.group(1))
+            newLineSegments.append("<cite>"+res.group(2)+"</cite>")
+            newLineSegments.append(res.group(3))
          else:
             # No citation was found
             #print("not found!")
@@ -46,20 +54,24 @@ for line in input:
    lineSegments = [line]
    # Look for citations using the following expressions
    # each found citation will cut the context into several segments, one of which containing the citation
-   lineSegments = labelReference(lineSegments,")([A-Z][^ ]+ and [A-Z][^ ]+[, ]* [(][12][0-9][0-9][0-9][a-f]*[)])(")   
-   lineSegments = labelReference(lineSegments,")([A-Z][^ ]+ and [A-Z][^ ]+[, ]* [12][0-9][0-9][0-9][a-f]*)(")   
-   lineSegments = labelReference(lineSegments,")([A-Z][^ ]+ et al[., ]*[(][12][0-9][0-9][0-9][a-f]*[)])(")   
-   lineSegments = labelReference(lineSegments,")([A-Z][^ ]+ et al[., ]*[12][0-9][0-9][0-9][a-f]*)(")   
-   lineSegments = labelReference(lineSegments,")([A-Z][^ ]+ and [A-Z][^ ]+ [12][0-9][0-9][0-9][a-f]*)(")   
-   lineSegments = labelReference(lineSegments,")([A-Z][^ ]+[, ]*[12][0-9][0-9][0-9][a-f]*)(")   
-   lineSegments = labelReference(lineSegments,")([A-Z][^ ]+ [(][12][0-9][0-9][0-9][a-f]*[)])(")   
+   lineSegments = repeatSearch(lineSegments,")([A-Z][^ ]+ and [A-Z][^ ]+[, ]* [(][12][0-9][0-9][0-9][a-f]*[)])(")   
+   lineSegments = repeatSearch(lineSegments,")([A-Z][^ ]+ and [A-Z][^ ]+[, ]* [12][0-9][0-9][0-9][a-f]*)(")   
+   lineSegments = repeatSearch(lineSegments,")([A-Z][^ ]+ & [A-Z][^ ]+[, ]* [(][12][0-9][0-9][0-9][a-f]*[)])(")   
+   lineSegments = repeatSearch(lineSegments,")([A-Z][^ ]+ & [A-Z][^ ]+[, ]* [12][0-9][0-9][0-9][a-f]*)(")   
+   lineSegments = repeatSearch(lineSegments,")([A-Z][^ ]+ et al[., ]*[(][12][0-9][0-9][0-9][a-f]*[)])(")   
+   lineSegments = repeatSearch(lineSegments,")([A-Z][^ ]+ et al[., ]*[12][0-9][0-9][0-9][a-f]*)(")   
+   #lineSegments = repeatSearch(lineSegments,")([A-Z][^ ]*[a-zàâäéèêëìîöòôùûüç][^ ]*[, ]*[12][0-9][0-9][0-9][a-f]*)(")   
+   lineSegments = repeatSearch(lineSegments,")([A-Z][^ ]+[, ]*[12][0-9][0-9][0-9][a-f]*)(")   
+   lineSegments = repeatSearch(lineSegments,")([A-Z][^ ]+ [(][12][0-9][0-9][0-9][a-f]*[)])(")   
    citationFound = False
    # Reconstruct the context with labeled citations by putting together all segments
    for segment in lineSegments:
       output.writelines(segment)
+      outputHtml.writelines(segment.replace("<cite>","<b><u>").replace("</cite>","</u></b>"))
       if segment[0:6] == "<cite>":
          citationFound = True
    output.writelines("\n")
+   outputHtml.writelines("<br>\n")
    # Update the number of found citations
    contextNb += 1
    if citationFound:
@@ -71,3 +83,6 @@ for line in input:
 print(str(contextNb)+" contexts, "+str(foundCitations)+" citations.")
 input.close()
 output.close()
+
+outputHtml.writelines("</body></html>")
+outputHtml.close()
