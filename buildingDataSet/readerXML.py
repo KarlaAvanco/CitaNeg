@@ -3,19 +3,6 @@ from xml.dom import minidom
 
 # Helper functions -------------------------------------------------
 #get text from nodes
-def displayNodeText(node):
-    if node.childNodes.length == 0:
-        data = ""
-        try: 
-            data = node.data
-        except:
-            pass
-        return data
-    else:
-        text=""
-        for child in node.childNodes:
-            text += displayNodeText(child)
-        return text
 
 # get the text without sequences of whitespaces
 def cleanText(text):
@@ -42,7 +29,22 @@ class XMLreader ():
         
         self.current_file_name = ''
         
-
+    def displayNodeText(self, node):
+        if node.childNodes.length == 0:
+            data = ""
+            try: 
+                data = node.data
+            except:
+                pass
+            return data
+        else:
+            text=""
+            for child in node.childNodes:
+                if self.isCitationChild (child):
+                    text +='<cite>'+self.displayNodeText(child)+'<\\cite>'
+                else:
+                    text += self.displayNodeText(child)
+            return text
 
     def read (self, path):
     #This function processes the datasets in xml format.
@@ -109,7 +111,7 @@ class XMLreader ():
                         dataset['contextID'] = contextId
 
                         # get the text of each context
-                        cleanedText = cleanText(displayNodeText(context))
+                        cleanedText = cleanText(self.displayNodeText(context))
                         dataset['citeContext'] = cleanedText
                         
                     except:

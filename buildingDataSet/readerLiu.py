@@ -1,6 +1,7 @@
 import glob
 import csv 
 import re 
+from seekCitationsInText import seekCitations
 
 class liuReader ():
     def read (self, path):
@@ -22,7 +23,8 @@ class liuReader ():
                     dataset['contextID'] = row[0]
                     dataset['paperID'] = "NA"
                     citeContext = re.sub('_comma_', ',',row[2])  # Replace the expression _comma_ par a real comma (,)
-                    dataset['citeContext'] = citeContext
+                    dataset['citeContext'] = seekCitations (citeContext)
+                    #dataset['citeContext'] = citeContext
                     dataset['originalLabel'] = row[1]
                     if dataset['originalLabel'] == '0':
                         dataset['polarity'] = "1"       # Create a new label for polarity

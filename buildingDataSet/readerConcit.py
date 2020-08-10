@@ -139,4 +139,12 @@ class concitReader (XMLreader): # Class to processes the concit dataset.
     def isNegativePolarity (self, label):
         return label == "neg" 
         
-    
+    def isCitationChild (self,node):
+        if node.nodeType == minidom.Node.ELEMENT_NODE:
+            name = node.nodeName
+            if name != None:
+                return name == 'cite'
+            else:
+                return False
+        else:
+            return False

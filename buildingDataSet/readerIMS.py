@@ -39,3 +39,13 @@ class imsReader (XMLreader): # Class to processes the IMS dataset.
 
     def getFilesList (self, path):
         return glob.glob(path)
+
+    def isCitationChild (self,node):
+        if node.nodeType == minidom.Node.ELEMENT_NODE:
+            name = node.nodeName
+            if name != None:
+                return name == 'ref'
+            else:
+                return False
+        else:
+            return False

@@ -1,5 +1,6 @@
 import glob
 import re
+from seekCitationsInText import seekCitations
 
 class atharReader ():
     def read (self, path):
@@ -20,12 +21,12 @@ class atharReader ():
                         dataset['contextID'] = tokenized_line[0].strip()
                         dataset['paperID'] = tokenized_line[1].strip()
                         citeContext = tokenized_line[3].strip()
-                        match = re.search(r'^(")(.*)(")$',citeContext) # Exclude the quoatation marks before and after the text
+                        match = re.search(r'^(")(.*)(")$',citeContext) # Exclude the quotation marks before and after the text
                         if match:
                             context = match.group(2)
-                            dataset['citeContext'] = context
+                            dataset['citeContext'] = seekCitations (context)
                         else: 
-                            dataset['citeContext'] = citeContext
+                            dataset['citeContext'] = seekCitations (citeContext)
                         dataset['originalLabel'] = tokenized_line[2].strip()
                         if dataset['originalLabel'] == 'n':    
                             dataset['polarity'] = "1"       # Create a new label for polarity

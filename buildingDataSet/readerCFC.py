@@ -12,8 +12,9 @@ class cfcReader (XMLreader): # Class to processes the CFC dataset.
         # focus on the <FILENO> tag
         paperIds = root_node.getElementsByTagName('FILENO')
         for paperId in paperIds:
-            paper_Id_text = displayNodeText(paperId)
+            paper_Id_text = self.displayNodeText(paperId)
         return paper_Id_text
+        
 
     #The following functions get the lables specific to the CFC dataset
     def getDataSourceName (self):
@@ -38,3 +39,13 @@ class cfcReader (XMLreader): # Class to processes the CFC dataset.
 
     def getFilesList (self, path):
         return glob.glob(path)
+
+    def isCitationChild (self,node):
+        if node.nodeType == minidom.Node.ELEMENT_NODE:
+            name = node.nodeName
+            if name != None:
+                return name == 'REF' or name == 'REFAUTHOR'
+            else:
+                return False
+        else:
+            return False
