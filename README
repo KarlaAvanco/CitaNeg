@@ -60,7 +60,7 @@ This module presents a collection of funcitons to identify the patterns that con
 
 5. evaluator.py
 This function (class Evaluator) stores the results from the features and rules modules in a dictionary which takes the id of the context as key. ALso, the text of the context and the original polarity, both coming from the CitaNeg dataset file, are stored in this dictionary. The text of the context is useful to analyze the rules result and the original polarity to verify precision and recall.
-This class also applies the rules and features and evaluates their results (result of a single rule/feature or of a collection of rules/features). 
+This class also applies the rules and features and evaluates their results (result of a single rule/feature). 
 Finaly, the class exports the results under csv format.
 
 6. main.py
