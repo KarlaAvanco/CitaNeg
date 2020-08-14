@@ -49,18 +49,15 @@ class Evaluator():
     
     def evaluteResultsForSingleMethod (self, method_id):
         
-        #The goal is to find "negative polarity" references
-        # A method gives a true positive when the annotated reference is negative and the automatic check is also negative
-        # A method gives a false positive when the annotated reference is not negative and the automatic check is negative
-        # A method gives a false negative when the annotated reference is negative and the automatick check is not negative
-        # A method gives a true negative when the annotated reference is not negative and the automatic check is not negative
+        # The goal is to find "negative polarity" citations
+        # A method gives a true positive when the annotated citations is negative and the automatic check is also negative
+        # A method gives a false positive when the annotated citations is not negative and the automatic check is negative
+        # A method gives a false negative when the annotated citations is negative and the automatick check is not negative
+        # A method gives a true negative when the annotated citations is not negative and the automatic check is not negative
         true_negatives = 0
         true_positives = 0
         false_negatives = 0
         false_positives = 0
-
-        number_of_real_negative_annotations = 0
-        number_of_negatives_identified = 0
 
         for context_id in self.results:
             original_polarity = self.results[context_id]['original_polarity']
@@ -69,72 +66,18 @@ class Evaluator():
                 true_negatives +=1
             elif method_polarity == '0' and  original_polarity == '1':
                 false_negatives +=1
-                number_of_real_negative_annotations +=1
             elif method_polarity == '1' and  original_polarity == '1':
                 true_positives +=1
-                number_of_real_negative_annotations += 1
-                number_of_negatives_identified +=1
             elif method_polarity == '1' and  original_polarity == '0':
                 false_positives += 1
-                number_of_negatives_identified +=1
+               
 
-        recall = true_positives / number_of_real_negative_annotations
-        precision = true_positives / number_of_negatives_identified 
-        print ('For the method '+method_id+', precision is : '+str(precision)+' and recall is : '+str (recall))
-        print ('true negatives : '+str(true_negatives)+', true positives : '+str(true_positives))
-        print ('false negatives : '+str(false_negatives)+', false positives : '+str(false_positives))
+        recall = (true_positives / (true_positives + false_negatives))
+        precision = (true_positives / (true_positives + false_positives))
+        print ('For the method '+method_id+', precision is: ' + str(precision)+ ' and recall is : ' + str (recall))
+        #print ('true negatives : '+str(true_negatives)+', true positives : '+str(true_positives))
+        #print ('false negatives : '+str(false_negatives)+', false positives : '+str(false_positives))
         return (true_negatives, true_positives, false_negatives, false_positives)
-
-#----------------------------------------------------------------
-    def evaluateResultsForMultipleMethods (self, method_ids):
-        number_of_matches = 0
-        number_of_annotated_negatives = 0
-        number_of_negatives_found = 0
-
-        for context_id in self.results:
-            method_polarities = []
-            for method_id in method_ids:
-                method_polarities.append(self.results[context_id][method_id])
-            
-            original_polarity = self.results[context_id]['original_polarity']
-
-            matches = False
-            negative_found = False
-
-            if original_polarity == '1':
-                number_of_annotated_negatives += 1
-
-            #If at least one method finds a negative, then we consider that the group of methods
-            #has identified the context as negative
-            for method_polarity in method_polarities:
-                if method_polarity == '1' and original_polarity == '1':
-                    matches = True
-
-                if method_polarity == '1':
-                    negative_found = True
-            
-            if matches:
-                number_of_matches += 1
-            
-            if negative_found:
-                number_of_negatives_found +=1
-
-        
-        recall = number_of_matches / number_of_annotated_negatives
-        precision = number_of_matches / number_of_negatives_found 
-
-        names = ''
-        for method_id in method_ids:
-            if names == '':
-                names = method_id
-            else:
-                names = names+', '+method_id
-
-        print ('For the methods '+names)
-        print ('Precision is : '+str(precision)+' and recall is : '+str (recall))
-
-        
-        return (recall, precision)
 
 
     #Optional parameter list_of_exported_methods 

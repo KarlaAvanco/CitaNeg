@@ -34,7 +34,7 @@ rule_index = ['WF1', 'WF2']
 evaluator.apply (feature_index) # It is possible to apply the features and rules on the whole list
 evaluator.apply (['WF1', 'WF2'])    # or chose a specific feature/rule
 
-evaluator.evaluateResultsForMultipleMethods (['WF1','WF2'])
+evaluator.evaluteResultsForSingleMethod('WF1')
 evaluator.evaluteResultsForSingleMethod('WF2')
 
 evaluator.exportAsCSV (output_filename)
