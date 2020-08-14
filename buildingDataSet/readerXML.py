@@ -41,7 +41,7 @@ class XMLreader ():
             text=""
             for child in node.childNodes:
                 if self.isCitationChild (child):
-                    text +='<cite>'+self.displayNodeText(child)+'<\\cite>'
+                    text +='<cite>'+self.displayNodeText(child)+'<\/cite>'
                 else:
                     text += self.displayNodeText(child)
             return text
