@@ -164,12 +164,18 @@ The function of the script is twofold:
 - to identify features and applie rules to the contexts;
 - to evaluate the results regarding precision, recall anf F score.
 
+
+HOW TO USE THE SCRIPT
 The script takes three inputs and produces three outputs.
 (a) input 1: directory with the Stanza parsed files
 (b) input 2: CitaNeg datased (csv file)
 (c) input 3: a file with specificic scores produced by the software TXM (csv file)
 (d) output: results table in two versions, rules and features (csv files)
 (e) output: results file adapted for WEKA (csv file)
+
+It is possible to use the scripts independently, if the contexte have already been parsed. In other words, this package can be used without the pipeline.py. Use the command line below and the path to the respective folders/files:
+
+python3 main.py (a) (d) (e) (b) (c)
 
 
 HOW TO ADD NEW RULES OR FEATURES
