@@ -36,8 +36,8 @@ The function of the scripts is twofold:
 - Each subset should be in their respective folder; the  folder must have the same name as the subset (ATHAR, DFKI, LIU, CFC, IMS, Concit). In case of including different subsets, use the same procedure.
 - To run the code, when using Linux, type the command line: 
 
---- python3 main.py path_to_the_orignal_datasets path_to_the_results_folder ---
-
+python3 main.py path_to_the_orignal_datasets path_to_the_results_folder 
+ 
 ### HOW TO ADD NEW DATASETS:
 
 To create a new dataset using other individual subsets, follow the steps below:
@@ -57,13 +57,11 @@ Modifications to the script:
 The script produces 5 files:
 - citaneg_untrimmed.csv: dataset containing all citation contexts, including repetitions (before data cleaning)
 - citaneg.csv: dataset containing all citaion contexts but without repetitions (after data cleaning)
-- citaneg_by_len.csv: dataset containing all citaion contexts but without repetitions (after data cleaning) and selected according to the lenght (contexts tht between 30 and 550 characters)
+- citaneg_by_len.csv: dataset containing all citaion contexts but without repetitions (after data cleaning) and selected according to the lenght (contexts that have between 30 and 550 characters); the lennght of contexts can be changed
 - citaneg_mul_pol.csv: contexts that present multiple polarities (i.e. multiple lables)
 - duplicates.txt: file containing the repeated contexts
 
 
--------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -75,27 +73,28 @@ These scripts represent an intemediate phase. It involves two independent script
 This script calculates the percentage of contexts containing a negative citation for each subset and in total. To run this code, use the path to the dataset file to be analyzed and the path to the resulting file, adding the name of the last one. The command line is the following:
 
 			python3 first_stats path_to_the_dataset_file path_to_the_resulting_file_including_its_name
-Result
+### Result
 - A csv file containing the results of the statistical analysis.
-It is necessary to run the script for every dataset tht you want to have analyzed.
+It is necessary to run the script for every dataset that you want to have analyzed.
 
 2. selecting1000.py
 This script produces a training dataset and a testing dataset. Tre training dataset contains 500 "negative" contexts and 500 "other" contexts. The testing dataset contains the remaining "negative" contexts and the same amount of "other" contexts. To run this code, use the path to the dataset file to be treated (it is recommended to use the CitaNeg dataset without duplicates and whose contexts length ranges from 30 to 550),  the path to the resulting file (training_dataset), and the path to the resulting file (testing_dataset) adding the name of the last ones. The command line is the following:
 
 		python3 selecting1000 path_to_the_dataset_file path_to_the_resulti_file_training_dataset path_to_the_resulti_file_testing_dataset
 
-Rresult
+### Result
 - training dataset: a csv file containing 1000 contexts (500 negative and 500 other).
-- testing dataset: a csv file containing 833 contexts (417 negative and 416 other).
+- testing dataset: a csv file containing X contexts (the remaining negative contexts and the same amount of "other" contexts). 
 
 3. adaptingCitaneg.py
 This script transforms each citation context in a single .txt file and store all this files in a folder. To run the script, use the path to the dataset file to be treated and the path to where the resulting folder should be stored. It is recommended to store it at the same location as the code to analyze the contexts (part III). The command line is the following:
 
 			python3 adaptingCitaneg.py path_to_the_dataset_file path_to_the_resulting_folder
 
+### Result
+- a folder containing txt files (as amny files as there are contexts).
 
--------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------
+
 -------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -113,30 +112,38 @@ This script transforms each citation context in a single .txt file and store all
 4. Download Stanza if you have not done it yet. (See references below).
 
 
-HOW TO USE THE SCRIPTS:
+### HOW TO USE THE SCRIPTS:
 
 1. pipeline.py
 This script calls the two python codes below (running_stanza.py and analyzingDataset)
-it is the only code you need to call. To do so, you will need the following paths:
-(a) path to the folder where the script running_stanza.py is
-(b) path to the folder where the folder with contexts for parsing is (this folder is the result of the adaptingDataset.py script presented in part II of this document)
-(c) path to the folder where the parsedcontexts will be stored
-(c) path to the folder of the analyzingDataset package
-(d) path to the folder where the results will be stored
-(e) path to the folder where the results for WEKA will be stored
-(g) parth to folder where the dataset csv file is
-(h) parth to the specificites.csv file
+It is the only code you need to call; however, it is possible to call analyzingDataset separetedly, in case the contexts have already been parsed by Stanza.
+To call the pipeline.py code, you will need the following paths:
+(a) path to the folder where the script running_stanza.py is stored;
+(b) path to the folder where the folder with contexts for parsing is stored (this folder is the result of the adaptingDataset.py script presented in Part II of this document);
+(c) path to the folder where the parsed contexts will be stored;
+(c) path to the folder of the analyzingDataset package;
+(d) path to the folder where the results will be stored;
+(e) path to the folder where the results for WEKA will be stored;
+(g) parth to folder where the dataset csv file is located (the dataset used in csv format);
+(h) parth to the specificites.csv file.
 
 The command line is:
 
 		python3 pipeline.py (a) (b) (c) (d) (e) (f) (g) (h) 
 
 2. running_stanza.py
-This script uses the software stanza to parse the contexts. It takes as input the folder that contains the txt files (1 context per file). The output is a folder that contains the parsed contexts (json format).
+This script uses the software stanza to parse the contexts. TO use it, it is necessary to have the software installed. The code takes as input the folder that contains the txt files (1 context per file). The output is a folder that contains the parsed contexts (json format).
 
 3. analyzingDataset
 
-DESCRIPTION 
+
+### FUNCTION
+The function of the script is twofold:
+- to identify features and applie rules to the contexts;
+- to evaluate the results regarding precision, recall anf F score.
+
+
+### DESCRIPTION 
 The script to analyze the CitaNEg dataset comprises the following:
 - 7 different codes, being three classes, two function modules and a main code.
 It should be noted that the code stores the traits, features and rules as boolean functions that are stored conveniently into corresponding dictionaries. This allows applying individually each rule using it's key in the corresponding dictionary.
@@ -168,13 +175,7 @@ Finaly, the class exports the results under csv format.
 The main code opens the directory where the Talismane parsed files are stored. It allow to apply the features/rules and evaluate them by calling the class Evaluator.
 
 
-FUNCTION
-The function of the script is twofold:
-- to identify features and applie rules to the contexts;
-- to evaluate the results regarding precision, recall anf F score.
-
-
-HOW TO USE THE SCRIPT
+### HOW TO USE THE SCRIPT
 The script takes three inputs and produces three outputs.
 (a) input 1: directory with the Stanza parsed files
 (b) input 2: CitaNeg datased (csv file)
@@ -184,11 +185,10 @@ The script takes three inputs and produces three outputs.
 
 It is possible to use the scripts independently, if the contexte have already been parsed. In other words, this package can be used without the pipeline.py. Use the command line below and the path to the respective folders/files:
 
-python3 main.py (a) (d) (e) (b) (c)
+		python3 main.py (a) (d) (e) (b) (c)
 
 
-HOW TO ADD NEW RULES OR FEATURES
-
+### HOW TO ADD NEW RULES OR FEATURES
 To add new rules, traits or features:
 - create a new function for the rule or trait in the rule_module class and/or the new feature in the feature_module class;
 - add the name of the new rule, trait or feature to the dictionary (identifier of the rule/feature as dict key and name of the function as dict value) at the end of the respective model;
@@ -196,12 +196,13 @@ To add new rules, traits or features:
 
 
 
-----------------------
-REFERENCES:
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+## REFERENCES:
 
 1. Corpus CFC
 S.Teufel, A.Siddharthan, D.Tidhar. (2006). Automatic classification of citation function. Proceedings of EMNLP-06, Sydney, Australia, 103-110.
-Dataset available at : https://www.cl.cam.ac.uk/~sht25/CFC.html 
+Dataset available at : (https://www.cl.cam.ac.uk/~sht25/CFC.html) 
 
 2. Corpus DFKI
 Dong, C., Schäfer, U. (2011). Ensemble-style Self-training on Citation Classification. Proceedings of the 5th International Joint Conference on Natural Language Processing, 623–631.
