@@ -202,7 +202,7 @@ To add new rules, traits or features:
 
 1. Corpus CFC
 S.Teufel, A.Siddharthan, D.Tidhar. (2006). Automatic classification of citation function. Proceedings of EMNLP-06, Sydney, Australia, 103-110.
-Dataset available at : (https://www.cl.cam.ac.uk/~sht25/CFC.html) 
+Dataset available at : https://www.cl.cam.ac.uk/~sht25/CFC.html 
 
 2. Corpus DFKI
 Dong, C., Schäfer, U. (2011). Ensemble-style Self-training on Citation Classification. Proceedings of the 5th International Joint Conference on Natural Language Processing, 623–631.
