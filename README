@@ -95,9 +95,10 @@ Part III - analyzingDataset
 
 1. download the scripts:
 - pipeline.py
+- runningStanza.py 
 - analyzingDataset (folder)
 
-2. download the file specificities_neg_fullcorpus.csv
+2. download the file specificities.csv (specificity score found using the software TXM)
 
 3. create a folder to store the results obtained at this phase
 
@@ -218,4 +219,7 @@ Dataset available at : https://github.com/liuhaixiachina/Sentiment-Analysis-of-
 Peng Qi, Yuhao Zhang, Yuhui Zhang, Jason Bolton and Christopher D. Manning. 2020. Stanza: A Python Natural Language Processing Toolkit for Many Human Languages. In Association for Computational Linguistics (ACL) System Demonstrations. 2020. 
 Stanza NLP available at: https://stanfordnlp.github.io/stanza/
 
+8. TXM
+Heiden, S. (2010b). The TXM Platform: Building Open-Source Textual Analysis Software Compatible with the TEI Encoding Scheme. In Ryo Otoguro, Kiyoshi Ishikawa, Hiroshi Umemoto, Kei Yoshimoto, Yasunari Harada (Ed.), 24th Pacific Asia Conference on Language, Information and Computation - PACLIC24 (p. 389-398). Institute for Digital Enhancement of Cognitive Development, Waseda University, Sendai, Japan. 
+TXM available at: http://textometrie.ens-lyon.fr/?lang=en
 
