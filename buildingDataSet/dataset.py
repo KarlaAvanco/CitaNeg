@@ -155,53 +155,32 @@ class dataset():
             for dict in self.trimmed_list:
                 writer.writerow(dict)
     
-    # def exportCSVNegWithDuplicates (self, output_file):
-    # # This function produces a csv file containing only the negative citation contexts
-    # # retrieved and their respective metadata, including possible duplicates
-    # # The function takes two parameters: a file path and a list
-       
-    #     if len(self.complete_list_of_contexts) == 0:
-    #         return
-    #     else:
-    #         self.creatingContextIdForDuplicatedList()
-
-    #     self.getTheLen()
-
-    #     with open(output_file, mode='w', newline='') as csvfile:
-    #         fieldnames = ['id','dataSource', 'contextID', 'paperID', 'citeContext', 'function', 'originalLabel', 'polarity', 'contextLength']
-    #         writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter= '\t')
-    #         writer.writeheader()
-            
-    #         for dict in self.complete_list_of_contexts:
-    #             if dict['polarity'] == '1': # Use only the negative contexts.
-    #                 writer.writerow(dict)
-   
-    # def exportCSVNegWithoutDuplicates (self, output_file):
-    # # This function produces a csv file containing only the negative citation contexts
-    # # retrieved and their respective metadata, after trimming the list
-    # # The function takes two parameters: a file path and a list
+    def exportCSVNegWithoutDuplicates (self, output_file):
+    # This function produces a csv file containing the citation contexts whose len is <= 30 and >= 550
+    # retrieved and their respective metadata, after trimming the list
+    # The function takes two parameters: a file path and a list
         
-    #     if len(self.trimmed_list) == 0:
-    #         if len(self.complete_list_of_contexts) == 0:
-    #             return
-    #         else:
-    #             self.seekDuplicates()
-    #             self.creatingContextIdForDuplicatedList()
-    #             self.creatingContextIdForTrimmedList()
-    #     else:
-    #         self.creatingContextIdForDuplicatedList()
-    #         self.creatingContextIdForTrimmedList()
+        if len(self.trimmed_list) == 0:
+            if len(self.complete_list_of_contexts) == 0:
+                return
+            else:
+                self.seekDuplicates()
+                self.creatingContextIdForDuplicatedList()
+                self.creatingContextIdForTrimmedList()
+        else:
+            self.creatingContextIdForDuplicatedList()
+            self.creatingContextIdForTrimmedList()
 
-    #     self.getTheLen()
+        self.getTheLen()
 
-    #     with open(output_file, mode='w', newline='') as csvfile:
-    #         fieldnames = ['id','dataSource', 'contextID', 'paperID', 'citeContext', 'function', 'originalLabel', 'polarity','contextLength']
-    #         writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter= '\t')
-    #         writer.writeheader()
+        with open(output_file, mode='w', newline='') as csvfile:
+            fieldnames = ['id','dataSource', 'contextID', 'paperID', 'citeContext', 'function', 'originalLabel', 'polarity','contextLength']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter= '\t')
+            writer.writeheader()
             
-    #         for dict in self.trimmed_list:
-    #             if dict['polarity'] == '1': # Use only the negative contexts.
-    #                 writer.writerow(dict)
+            for dict in self.trimmed_list:
+                if int(dict['contextLength']) >= 30 and int(dict['contextLength']) <= 550:
+                    writer.writerow(dict)
 
     def exportMulPol (self, output_file):
     # This function produces a csv file containing the contexts that present multiple polarities.

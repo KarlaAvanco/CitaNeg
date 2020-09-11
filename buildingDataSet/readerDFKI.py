@@ -29,7 +29,7 @@ class dfkiReader():
                     previousID = cite
                     textContext = tokenized_line[1].strip()
                     if re.findall(r'\( \)', textContext): # identify the citations
-                        citeContext=re.sub('\( \)', '<cite>( )</cite>', textContext) #add the <cite> and </cite> tags around the citation
+                        citeContext=re.sub('\( \)', '<cite>( )</cite>', textContext) # add the <cite> and </cite> tags around the citation
                     dataset['citeContext'] = citeContext
                     dataset['originalLabel'] = tokenized_line[5].strip()
                     if not dataset['originalLabel'] == "NULL": # exclude the contexts whose polarity is NULL
